@@ -1,15 +1,5 @@
-# Logs
-*.log
-trace.log
-error.log
-debug.log
-
-# Temporary & Lock files
-*.tmp
+*.zip
 *.lock
-
-# OS / Editor files
-Thumbs.db
-.DS_Store
-.idea/
-.vscode/
+error.log
+bin/
+obj/

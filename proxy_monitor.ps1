@@ -140,10 +140,10 @@ function Render-PixelIcon {
 $paletteGreen = @{
     "." = $null
     "#" = [System.Drawing.Color]::FromArgb(35, 45, 40)        # 柔和炭黑描边
-    "G" = [System.Drawing.Color]::FromArgb(82, 215, 140)      # 活力薄荷翠绿体色
-    "D" = [System.Drawing.Color]::FromArgb(46, 150, 95)       # 耳窝深色阴影
+    "G" = [System.Drawing.Color]::FromArgb(195, 196, 198)     # 银灰体色（精准复刻参考原图）
+    "D" = [System.Drawing.Color]::FromArgb(139, 141, 145)     # 耳窝深灰阴影
     "W" = [System.Drawing.Color]::FromArgb(255, 255, 255)     # 纯白口鼻与爪尖
-    "C" = [System.Drawing.Color]::FromArgb(39, 174, 96)       # 森林绿项圈
+    "C" = [System.Drawing.Color]::FromArgb(78, 113, 255)      # 宝蓝色项圈（精准复刻参考原图）
     "Y" = [System.Drawing.Color]::FromArgb(255, 215, 0)       # 金黄色铃铛
 }
 
@@ -203,13 +203,13 @@ $gridGreen2 = @(
     ".#DDGGGGGGGGGDD#....",
     ".#DDGGGGGGGGGDD#....",
     ".#DGGGGGGGGGGGD#....",
-    ".#GGGGGGGGGGGGG#.##.",
-    ".#GGG#GGGGG#GGG##GG#",
-    ".#GGG#GWWWG#GGG#G##G",
-    ".#GGGGWW#WWGGGG##G#.",
-    "..#GGWWWWWWWGG##G#..",
-    "...##CCCCCCC##W#....",
-    "...#GGGGYGGGG#W#....",
+    ".#GGGGGGGGGGGGG#....",
+    ".#GGG#GGGGG#GGG#.##.",
+    ".#GGG#GWWWG#GGG##GG#",
+    ".#GGGGWW#WWGGGG#G##G",
+    "..#GGWWWWWWWGG##G#.#",
+    "...##CCCCCCC##W#G#..",
+    "...#GGGGYGGGG#W#G#..",
     "..#GGGGGGGGGGG#G#...",
     "..#GGG#GGG#GGGG#....",
     "..#GGG#GGG#GGG#.....",
@@ -226,13 +226,13 @@ $gridGreen3 = @(
     ".#DDGGGGGGGGGDD#....",
     ".#DDGGGGGGGGGDD#....",
     ".#DGGGGGGGGGGGD#....",
-    ".#GGGGGGGGGGGGG#.##.",
-    ".#GG##GGGGG##GG##GG#",
-    ".#G#GGWWWG#G#GG#G##G",
-    ".#GGGGWW#WWGGGG##G#.",
-    "..#GGWWWWWWWGG#W#...",
-    "...##CCCCCCC##W#....",
-    "...#GGGGYGGGG##.....",
+    ".#GGGGGGGGGGGGG#....",
+    ".#GG##GGGGG##GG#.##.",
+    ".#G#GGWWWG#G#GG##GG#",
+    ".#GGGGWW#WWGGGG#G##G",
+    "..#GGWWWWWWWGGW#G#.#",
+    "...##CCCCCCC##W#G#..",
+    "...#GGGGYGGGG##.G#..",
     "..#GGGGGGGGGGG#G#...",
     "..#GGG#GGG#GGGG#....",
     "..#GGG#GGG#GGG#.....",
@@ -251,11 +251,11 @@ $gridGreen4 = @(
     ".#DGGGGGGGGGGGD#....",
     ".#GGGGGGGGGGGGG#....",
     ".#GG##GGGGG#GGG#.##.",
-    ".#G#GGWWWG#GGG##GG#",
+    ".#GG#GGWWWG#GGG##GG#",
     ".#GGGGWW#WWGGGG#G##G",
     "..#GGWWWWWWWGG##G#.#",
-    "...##CCCCCCC##.#G#..",
-    "...#GGGGYGGGG#.#G#..",
+    "...##CCCCCCC##W#G#..",
+    "...#GGGGYGGGG##.G#..",
     "..#GGGGGGGGGGG#G#...",
     "..#GGG#GGG#GGGG#....",
     "..#GGG#GGG#GGG#.....",
@@ -299,7 +299,7 @@ $gridYellow = @(
     ".#DGGGGGGGGGGGD#....",
     ".#GGGGGGGGGGGGG#....",
     ".#GWW#GGGGG#WWG#.##.",
-    ".#G##GGWWWG#G##G##GG#",
+    ".#G##GGWWWG#G##G#GG#",
     ".#GGGGWW#WWGGGG#G##G",
     "..#GGWWWWWWWGG##G#.#",
     "...##CCCCCCC##.#G#..",

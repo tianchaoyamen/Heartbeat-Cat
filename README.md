@@ -4,9 +4,10 @@
 
 **专为 Clash Verge / 代理打造的 Windows 任务栏「像素猫猫」实时连通性监控工具**
 
-[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white)](https://github.com/tianchaoyamen/Heartbeat-Cat)
-[![Runtime](https://img.shields.io/badge/Runtime-PowerShell%205.1+-5391FE?logo=powershell&logoColor=white)](https://github.com/tianchaoyamen/Heartbeat-Cat)
-[![Dependency](https://img.shields.io/badge/Dependency-Zero%20(开箱即用)-brightgreen)](https://github.com/tianchaoyamen/Heartbeat-Cat)
+[![Platform](https://img.shields.io/badge/Platform-Windows%207%20~%2011-0078D6?logo=windows&logoColor=white)](https://github.com/tianchaoyamen/Heartbeat-Cat)
+[![Executable](https://img.shields.io/badge/Binary-HeartbeatCat.exe%20(Standalone)-orange?logo=windows)](https://github.com/tianchaoyamen/Heartbeat-Cat/releases)
+[![Dependency](https://img.shields.io/badge/Dependency-Zero%20(无需VBS/无依赖)-brightgreen)](https://github.com/tianchaoyamen/Heartbeat-Cat)
+[![Release](https://img.shields.io/github/v/release/tianchaoyamen/Heartbeat-Cat?color=blue)](https://github.com/tianchaoyamen/Heartbeat-Cat/releases)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 <br/>
@@ -25,52 +26,58 @@
 
 ## ✨ 核心特性
 
-- 🐱 **生动的像素猫猫视觉反馈**
-  - 🟢 **正常连通 · 动态招财猫**：薄荷翠绿体色，小肉爪欢快挥动、摇晃尾巴、开心眨眼，一眼便知节点畅通！
-  - 🔴 **异常断开 · 晕倒红猫猫**：警示珊瑚红，耷拉着耳朵，双眼晕倒打叉 `x x`，脸颊挂着泪滴 💧，瞬间警觉！
-  - 🟡 **检测等待 · 歪头黄猫猫**：温暖金黄，大圆眼 `o o` 好奇四顾，头顶带疑惑小问号。
+- 🐱 **精准复刻经典原版像素猫视觉设计**
+  - 🟢 **正常连通 · 动态招财猫**：经典原画银灰毛色（`#C3C4C6`）、纯白口鼻与爪尖、宝蓝项圈（`#4E71FF`）与黄金铃铛。小肉爪欢快挥动并开心眨眼，**尾巴安静伫立**，辨识度极高，一眼便知节点畅通！
+  - 🔴 **异常断开 · 晕倒红猫猫**：警示珊瑚红，耳朵耷拉折起，双眼打叉晕倒 `x x`，脸颊挂着大滴眼泪 💧，尾巴垂下，瞬间警觉！
+  - 🟡 **检测等待 · 歪头黄猫猫**：温暖金黄，大圆眼 `o o` 好奇四顾，头顶顶着小问号标识。
 
-- ⚡ **零环境依赖，开箱即用**
-  - 基于 Windows 原生 PowerShell 与 WinForms GDI+，**无需安装 Python、Node.js 或任何运行库**。
-  - 双击即跑，纯原生 API 内存仅占用约 **20~25 MB**，CPU 消耗趋近于 **0%**。
+- ⚡ **独立 EXE 打包，彻底脱离 VBScript 依赖**
+  - 针对 Windows 11 等现代系统逐步废弃 VBScript 的情况，提供专用原生的独立可执行文件 **`HeartbeatCat.exe`**。
+  - **无需安装任何第三方环境**（免 Python、免 Node.js，无需 VBScript 脚本宿主）。
+  - 内置原生 Windows Forms 渲染引擎与低内存网络探针，无黑框 CMD 闪烁，开机后台自启无忧，内存占用仅约 **15~20 MB**，CPU 消耗趋近于 **0%**。
 
-- 🛡️ **工业级防崩防泄漏设计 (24/7 长期守护)**
-  - **网络连接池严格清理**：每个请求独立释放底层 Socket 句柄与 Stream，杜绝长期运行导致的句柄耗尽。
-  - **内核级独占文件锁**：替代易在非管理员或异常中断时死锁的 Mutex，彻底防重复启动。
-  - **异常全熔断保护**：定时器与气泡通知内含多层异常防护，并输出 `error.log`，绝不因单次网络闪断发生程序闪退。
+- 🛡️ **工业级防崩溃、防闪退与句柄保护 (24/7 长期守护)**
+  - **网络连接池严格清理**：每个探针请求严格释放底层 Socket、TCP 句柄与 Stream，杜绝长期运行导致的资源耗尽。
+  - **系统内核级独占文件锁**：替代易在非管理员或异常中断时死锁的传统 Mutex，进程被杀由 OS 内核自动回收，杜绝多实例竞争。
+  - **多层异常全熔断保护**：定时器、网络 IO 与气泡通知均配备全链路异常拦截，网络波动绝不导致程序崩溃。
 
 - 🔕 **智能通知延时防抖**
   - 网络经常闪断 1~2 秒就恢复？频繁弹窗很扰民！
-  - **默认 5 秒延时防抖**：短于 5 秒的瞬时闪断静默忽略，只变猫猫不弹窗；仅在断线超过 5 秒时才弹出系统预警，节点恢复时对应提示。
+  - **默认 5 秒延时防抖**：短于 5 秒的瞬时闪断静默处理（猫猫变红但系统不弹窗骚扰）；仅在断线持续超过 5 秒时才弹出 Windows 系统通知，节点恢复后同样发出温馨恢复提示。
 
-- 🪟 **多启动模式支持**
-  - **静默后台模式 (`.vbs`)**：完全后台隐身运行，桌面任务栏无任何黑框 CMD 窗口。
-  - **控制台调试模式 (`.bat`)**：实时滚动彩色终端日志，方便测速调优。
+- 🎛️ **便捷托盘右键菜单**
+  - 实时显示当前连通状态与延迟数值（毫秒）。
+  - 支持 **「立即检测」**、**「修改配置 (config.json)」**、**「重新加载配置」**（无需重启程序）。
 
 ---
 
-## 🚀 快速开始
+## 🚀 下载与使用
 
-### 1. 下载与解压
-直接下载本项目 ZIP 解压至任意文件夹，或使用 Git 克隆：
-```bash
+### 方式一：直接下载 Release 绿色版（最推荐，小白首选）
+
+1. 前往 **[GitHub Releases 页面](https://github.com/tianchaoyamen/Heartbeat-Cat/releases)** 下载最新版 `HeartbeatCat-v1.0.0-windows-x64.zip`。
+2. 解压到任意你喜欢的文件夹中。
+3. 双击运行 **`HeartbeatCat.exe`** 即可！
+
+> 💡 **小贴士**：
+> 如果右下角任务栏没有立刻看到猫猫，通常是因为被 Windows 折叠在向上的箭头 `^` 中。建议**鼠标左键拖动猫猫图标至任务栏外侧常驻显示**！
+
+### 方式二：从源码编译或二次开发
+
+本项目开源完整 C# 源码（`src/Program.cs`），所有 Windows 系统自带 .NET 编译工具，无需安装 Visual Studio：
+
+```cmd
 git clone https://github.com/tianchaoyamen/Heartbeat-Cat.git
+cd Heartbeat-Cat
+build.bat
 ```
-
-### 2. 启动运行
-- **推荐日常使用**：双击运行 **`start_silent.vbs`**（或 `启动监控(静默后台).vbs`）。
-  > 💡 **提示**：如果任务栏右下角没有直接看到猫猫，通常是被 Windows 折叠在任务栏向上的小箭头 `^` 里面。建议按住鼠标左键把猫猫拖出到任务栏常驻显示！
-- **调试排查问题**：双击运行 **`start_console.bat`**（或 `启动监控(调试窗口).bat`），可查看每次探测的实时延迟与日志。
-
-### 3. 退出程序
-- 方法一：鼠标右键点击任务栏的小猫猫，在菜单中选择 **「退出监控」**。
-- 方法二：双击运行 **`stop.bat`**（或 `停止监控.bat`）。
+执行 `build.bat` 即可一键生成最新的 `HeartbeatCat.exe`。
 
 ---
 
-## ⚙️ 配置说明 (`config.json`)
+## ⚙️ 配置文件说明 (`config.json`)
 
-程序支持通过 `config.json` 灵活定制检测行为：
+程序启动后会自动在同级目录生成 `config.json`，可随时修改并右键托盘点击 **「重新加载配置」**：
 
 ```json
 {
@@ -98,51 +105,30 @@ git clone https://github.com/tianchaoyamen/Heartbeat-Cat.git
 | `test_url` | `string` | `"http://www.gstatic.com/generate_204"` | 极轻量探测网址（HTTP 204 无内容极速返回，完全不耗流量）。 |
 | `direct_host` | `string` | `"1.1.1.1"` | 当 `mode` 为 `"direct"` 时生效，指定要盯防的固定落地服务器。 |
 | `direct_port` | `number` | `443` | 当 `mode` 为 `"direct"` 时生效的目标端口。 |
-| `check_interval_seconds`| `number` | `3` | 检测心跳频率（秒），默认每 3 秒检测一次。 |
-| `timeout_seconds` | `number` | `2` | 判定断开的超时阈值（秒）。 |
-| `show_notification` | `boolean` | `true` | 是否允许发送 Windows 任务栏气泡通知。 |
-| `notify_delay_seconds` | `number` | `5` | **通知防抖延时（秒）**。断网超过此时长才报警，闪断闪连不打扰。 |
-| `animation_speed_ms` | `number` | `400` | **绿猫猫招手动画帧率（毫秒）**。数值越小猫猫招手越快。 |
-
-> 💡 **修改后立即生效**：修改 `config.json` 保存后，只需在任务栏猫猫上 **右键 -> 重新加载配置**，无需重启程序！
+| `check_interval_seconds` | `number` | `3` | 检测间隔时间（秒）。 |
+| `timeout_seconds` | `number` | `2` | 单次检测超时阈值（秒）。 |
+| `show_notification` | `boolean` | `true` | 是否允许断网与恢复时弹出 Windows 系统通知气泡。 |
+| `notify_delay_seconds` | `number` | `5` | **断网通知延时防抖（秒）**。断线持续超过此时间才弹窗，避免频繁闪断打扰。 |
+| `animation_speed_ms` | `number` | `400` | 猫猫招手与眨眼动画帧切换间隔（毫秒）。 |
 
 ---
 
-## 🖱️ 托盘右键菜单
+## 🛑 退出监控
 
-右键点击任务栏的猫猫图标，即可弹出功能菜单：
-- 🟢 **状态展示**：悬停或查看当前网络延迟与最后检测时间戳。
-- 🔄 **立即检测**：立即触发一次探测，不等倒计时。
-- 📝 **修改配置 (config.json)**：一键调用系统记事本打开配置文件。
-- ⚡ **重新加载配置**：热重载设置，无需退出重新启动。
-- 🚪 **退出监控**：安全销毁图标，干净释放全部系统资源。
+- **推荐方式**：鼠标右键点击任务栏的小猫猫，在菜单中选择 **「退出监控」**。
+- **命令行方式**：双击运行目录下的 **`stop.bat`**。
 
 ---
 
-## 📁 项目结构
+## 🛠️ 开机自启设置 (可选)
 
-```text
-Heartbeat-Cat/
-├── assets/                       # 像素猫猫图形资源
-│   ├── cat_showcase.png          # 状态展示大图
-│   ├── cat_green_1.png ~ 4.png   # 绿猫猫 4 帧动画分解
-│   ├── cat_red.png               # 红猫猫 (断开状态)
-│   └── cat_yellow.png            # 黄猫猫 (检测状态)
-├── proxy_monitor.ps1             # 核心监控与托盘绘制主程序
-├── config.json                   # 配置文件
-├── start_silent.vbs              # 静默后台启动器 (英文名)
-├── start_console.bat             # 调试控制台启动器 (英文名)
-├── stop.bat                      # 退出停止脚本 (英文名)
-├── 启动监控(静默后台).vbs          # 静默后台启动器 (中文名)
-├── 启动监控(调试窗口).bat          # 调试控制台启动器 (中文名)
-├── 停止监控.bat                  # 退出停止脚本 (中文名)
-├── .gitignore
-├── LICENSE                       # MIT 许可证
-└── README.md                     # 项目说明文档
-```
+如果你希望每天开机后小猫自动出现在任务栏：
+1. 按键盘快捷键 `Win + R` 打开「运行」窗口。
+2. 输入 `shell:startup` 并回车，打开 Windows 启动文件夹。
+3. 将 `HeartbeatCat.exe` 右键创建桌面快捷方式，将该快捷方式移动到 `shell:startup` 文件夹中即可。
 
 ---
 
 ## 📄 开源许可证
 
-本项目基于 [MIT License](LICENSE) 开源，欢迎自由分享与二次改进。
+本项目基于 [MIT License](LICENSE) 开源。欢迎 Star、Fork 与提 Issue！
