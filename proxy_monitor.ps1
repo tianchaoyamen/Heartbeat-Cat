@@ -133,161 +133,183 @@ function Render-PixelIcon {
     return $icon
 }
 
-# ==================== 像素猫猫点阵与调色板设计 ====================
+# ==================== 像素猫猫点阵与调色板设计 (参考经典像素猫 19x17 精准复刻) ====================
 
 # 调色板
+# 🟢 绿猫猫（翠绿薄荷毛色 + 纯白口鼻 + 绿色项圈 + 金黄铃铛）
 $paletteGreen = @{
     "." = $null
-    "#" = [System.Drawing.Color]::FromArgb(15, 45, 25)        # 深色边缘描边
-    "B" = [System.Drawing.Color]::FromArgb(46, 204, 113)      # 活力薄荷翠绿体色
-    "L" = [System.Drawing.Color]::FromArgb(163, 240, 193)     # 肚皮浅绿高光
-    "P" = [System.Drawing.Color]::FromArgb(255, 175, 190)     # 粉色耳朵内侧 & 鼻子
-    "E" = [System.Drawing.Color]::FromArgb(15, 30, 20)        # 黑色眼睛
-    "W" = [System.Drawing.Color]::FromArgb(255, 255, 255)     # 白色高光眼眸 / 白色爪尖
-    "C" = [System.Drawing.Color]::FromArgb(255, 215, 0)       # 金黄色铃铛项圈
-    "T" = [System.Drawing.Color]::FromArgb(39, 174, 96)       # 尾巴深绿
+    "#" = [System.Drawing.Color]::FromArgb(35, 45, 40)        # 柔和炭黑描边
+    "G" = [System.Drawing.Color]::FromArgb(82, 215, 140)      # 活力薄荷翠绿体色
+    "D" = [System.Drawing.Color]::FromArgb(46, 150, 95)       # 耳窝深色阴影
+    "W" = [System.Drawing.Color]::FromArgb(255, 255, 255)     # 纯白口鼻与爪尖
+    "C" = [System.Drawing.Color]::FromArgb(39, 174, 96)       # 森林绿项圈
+    "Y" = [System.Drawing.Color]::FromArgb(255, 215, 0)       # 金黄色铃铛
 }
 
+# 🔴 红猫猫（珊瑚红体色 + 纯白口鼻 + 红色项圈 + 蓝色流泪）
 $paletteRed = @{
     "." = $null
-    "#" = [System.Drawing.Color]::FromArgb(50, 15, 15)        # 深红边缘描边
-    "B" = [System.Drawing.Color]::FromArgb(231, 76, 60)       # 警报珊瑚红体色
-    "L" = [System.Drawing.Color]::FromArgb(250, 177, 160)     # 浅粉红高光
-    "P" = [System.Drawing.Color]::FromArgb(255, 150, 150)     # 粉色耳心
-    "W" = [System.Drawing.Color]::FromArgb(255, 255, 255)     # 白色爪尖
-    "C" = [System.Drawing.Color]::FromArgb(180, 20, 20)       # 暗红项圈
-    "T" = [System.Drawing.Color]::FromArgb(192, 57, 43)       # 耷拉尾巴
-    "D" = [System.Drawing.Color]::FromArgb(52, 152, 219)      # 蓝色断线眼泪滴
+    "#" = [System.Drawing.Color]::FromArgb(50, 25, 25)        # 深红炭黑描边
+    "G" = [System.Drawing.Color]::FromArgb(235, 90, 80)       # 警报珊瑚红体色
+    "D" = [System.Drawing.Color]::FromArgb(170, 50, 45)       # 耳窝深红阴影
+    "W" = [System.Drawing.Color]::FromArgb(255, 255, 255)     # 纯白口鼻
+    "C" = [System.Drawing.Color]::FromArgb(180, 30, 30)       # 红色项圈
+    "Y" = [System.Drawing.Color]::FromArgb(240, 200, 50)      # 铃铛
+    "B" = [System.Drawing.Color]::FromArgb(52, 152, 219)      # 蓝色断网眼泪
 }
 
+# 🟡 黄猫猫（温暖金黄体色 + 纯白口鼻 + 橙色项圈 + 好奇大圆眼）
 $paletteYellow = @{
     "." = $null
-    "#" = [System.Drawing.Color]::FromArgb(50, 40, 10)        # 深琥珀色描边
-    "B" = [System.Drawing.Color]::FromArgb(241, 196, 15)      # 明亮暖黄体色
-    "L" = [System.Drawing.Color]::FromArgb(254, 249, 194)     # 浅奶油肚皮
-    "P" = [System.Drawing.Color]::FromArgb(255, 180, 150)     # 耳朵
-    "E" = [System.Drawing.Color]::FromArgb(40, 30, 10)        # 好奇黑瞳孔
-    "W" = [System.Drawing.Color]::FromArgb(255, 255, 255)     # 呆萌大白眼球
+    "#" = [System.Drawing.Color]::FromArgb(50, 40, 20)        # 深琥珀炭黑描边
+    "G" = [System.Drawing.Color]::FromArgb(244, 208, 63)      # 温暖金黄体色
+    "D" = [System.Drawing.Color]::FromArgb(214, 137, 16)      # 耳窝深琥珀阴影
+    "W" = [System.Drawing.Color]::FromArgb(255, 255, 255)     # 纯白口鼻与眼白
     "C" = [System.Drawing.Color]::FromArgb(230, 126, 34)      # 橙色项圈
-    "T" = [System.Drawing.Color]::FromArgb(214, 137, 16)      # 尾巴
+    "Y" = [System.Drawing.Color]::FromArgb(255, 235, 120)     # 浅金铃铛
     "Q" = [System.Drawing.Color]::FromArgb(230, 126, 34)      # 疑惑问号标识
 }
 
-# 🟢 绿猫猫 4 帧动态连贯点阵 (招手招财猫、摇尾巴、眨眼)
+# 🟢 绿猫猫 4 帧动态连贯点阵 (正统像素猫猫：招手、翘尾巴、眨眼微笑)
 $gridGreen1 = @(
-    "................",
-    "..#..........#..",
-    ".#B#........#B#.",
-    ".#PB########BP#.",
-    "#BPBBBBBBBBBPB#.",
-    "#BBBBBBBBBBBBB#.",
-    "#BEEBBBBBBBBEEB#",
-    "#BEWBBPPBBBBEEW#",
-    "#BBBBBBBBBBBBBB#",
-    ".#BBBBBBBBBBBB#.",
-    "..#CCCC#CCCC#...",
-    ".#BBBBBBBBBBBB#.",
-    ".#WBBBBBBBBBBW##",
-    ".#BBBBBBBBBBBB#T",
-    "..##........##.#",
-    "................"
+    "....................",
+    "..##........###.....",
+    ".#GG#......#GGG#....",
+    ".#DGG#######GGD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DGGGGGGGGGGGD#....",
+    ".#GGGGGGGGGGGGG#....",
+    ".#GGG#GGGGG#GGG#.##.",
+    ".#GGG#GWWWG#GGG##GG#",
+    ".#GGGGWW#WWGGGG#G##G",
+    "..#GGWWWWWWWGG##G#.#",
+    "...##CCCCCCC##.#G#..",
+    "...#GGGGYGGGG#.#G#..",
+    "..#GGGGGGGGGGG#G#...",
+    "..#GGG#GGG#GGGG#....",
+    "..#GGG#GGG#GGG#.....",
+    "...###########......",
+    "....................",
+    "...................."
 )
 
 $gridGreen2 = @(
-    "................",
-    "..#..........#..",
-    ".#B#........#B#.",
-    ".#PB########BP#.",
-    "#BPBBBBBBBBBPB#.",
-    "#BBBBBBBBBBBBB#.",
-    "#BEEBBBBBBBBEEB#",
-    "#BEWBBPPBBBBEEW#",
-    "#BBBBBBBBBBBBBB#",
-    ".#BBBBBBBBBBBB#.",
-    "..#CCCC#CCCC#W#.",
-    ".#BBBBBBBBBB#BW#",
-    ".#WBBBBBBBBBB##T",
-    ".#BBBBBBBBBBBB#T",
-    "..##........##.#",
-    "................"
+    "....................",
+    "..##........###.....",
+    ".#GG#......#GGG#....",
+    ".#DGG#######GGD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DGGGGGGGGGGGD#....",
+    ".#GGGGGGGGGGGGG#.##.",
+    ".#GGG#GGGGG#GGG##GG#",
+    ".#GGG#GWWWG#GGG#G##G",
+    ".#GGGGWW#WWGGGG##G#.",
+    "..#GGWWWWWWWGG##G#..",
+    "...##CCCCCCC##W#....",
+    "...#GGGGYGGGG#W#....",
+    "..#GGGGGGGGGGG#G#...",
+    "..#GGG#GGG#GGGG#....",
+    "..#GGG#GGG#GGG#.....",
+    "...###########......",
+    "....................",
+    "...................."
 )
 
 $gridGreen3 = @(
-    "................",
-    "..#..........#..",
-    ".#B#........#B#.",
-    ".#PB########BP#.",
-    "#BPBBBBBBBBBPB#.",
-    "#BBBBBBBBBBBBB##",
-    "#B##BBBBBBBB##W#",
-    "#BEEBBPPBBBBE#W#",
-    "#BBBBBBBBBBBB##.",
-    ".#BBBBBBBBBBBB#.",
-    "..#CCCC#CCCC#...",
-    ".#BBBBBBBBBBBB#T",
-    ".#WBBBBBBBBBBBB#",
-    ".#BBBBBBBBBBBB#.",
-    "..##........##..",
-    "................"
+    "....................",
+    "..##........###.....",
+    ".#GG#......#GGG#....",
+    ".#DGG#######GGD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DGGGGGGGGGGGD#....",
+    ".#GGGGGGGGGGGGG#.##.",
+    ".#GG##GGGGG##GG##GG#",
+    ".#G#GGWWWG#G#GG#G##G",
+    ".#GGGGWW#WWGGGG##G#.",
+    "..#GGWWWWWWWGG#W#...",
+    "...##CCCCCCC##W#....",
+    "...#GGGGYGGGG##.....",
+    "..#GGGGGGGGGGG#G#...",
+    "..#GGG#GGG#GGGG#....",
+    "..#GGG#GGG#GGG#.....",
+    "...###########......",
+    "....................",
+    "...................."
 )
 
 $gridGreen4 = @(
-    "................",
-    "..#..........#..",
-    ".#B#........#B#.",
-    ".#PB########BP#.",
-    "#BPBBBBBBBBBPB#.",
-    "#BBBBBBBBBBBBB#.",
-    "#BEEBBBBBBBB##B#",
-    "#BEWBBPPBBBBE#W#",
-    "#BBBBBBBBBBBB##.",
-    ".#BBBBBBBBBBBB#.",
-    "..#CCCC#CCCC#...",
-    ".#BBBBBBBBBBBB#.",
-    ".#WBBBBBBBBBBBB#",
-    ".#BBBBBBBBBBBB#T",
-    "..##........##.#",
-    "................"
+    "....................",
+    "..##........###.....",
+    ".#GG#......#GGG#....",
+    ".#DGG#######GGD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DGGGGGGGGGGGD#....",
+    ".#GGGGGGGGGGGGG#....",
+    ".#GG##GGGGG#GGG#.##.",
+    ".#G#GGWWWG#GGG##GG#",
+    ".#GGGGWW#WWGGGG#G##G",
+    "..#GGWWWWWWWGG##G#.#",
+    "...##CCCCCCC##.#G#..",
+    "...#GGGGYGGGG#.#G#..",
+    "..#GGGGGGGGGGG#G#...",
+    "..#GGG#GGG#GGGG#....",
+    "..#GGG#GGG#GGG#.....",
+    "...###########......",
+    "....................",
+    "...................."
 )
 
-# 🔴 红猫猫点阵 (断开连接：耳朵耷拉、x x 晕倒眼、流泪、尾巴垂下)
+# 🔴 红猫猫点阵 (断开连接：耳朵耷拉侧折、x x 晕倒眼、流泪、尾巴垂下)
 $gridRed = @(
-    "................",
-    "................",
-    ".##..........##.",
-    "#BBP########PBB#",
-    "#BBPBBBBBBBBPBB#",
-    "#BBBBBBBBBBBBBB#",
-    "#B#B#BBBBBB#B#B#",
-    "#BB#BBPPDDBB#BB#",
-    "#B#B#BPPDBB#B#B#",
-    ".#BBBBBBBBBBBB#.",
-    "..#CCCC#CCCC#...",
-    ".#BBBBBBBBBBBB#.",
-    ".#WBBBBBBBBBBW#.",
-    ".#BBBBBBBBBBBB#.",
-    "..##........##T#",
-    "...............#"
+    "....................",
+    "....................",
+    "...##........##.....",
+    "..#GG########GG#....",
+    ".#DGGGGGGGGGGGD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DGGGGGGGGGGGD#....",
+    ".#GGGGGGGGGGGGG#....",
+    ".#G#G#GGGGG#G#G#....",
+    ".#GG#GGWWWG#GG#G....",
+    ".#G#G#WW#WWG#G#GB...",
+    "..#GGWWWWWWWGGB#B...",
+    "...##CCCCCCC##.BB...",
+    "...#GGGGYGGGG#......",
+    "..#GGGGGGGGGGG#.....",
+    "..#GGG#GGG#GGGG#....",
+    "..#GGG#GGG#GGG#####.",
+    "...################.",
+    "....................",
+    "...................."
 )
 
 # 🟡 黄猫猫点阵 (检测/初始化：歪头斜耳、大圆眼好奇四顾、疑惑问号)
 $gridYellow = @(
-    "................",
-    "..#.........#...",
-    ".#B#.......#B#..",
-    ".#PB#######BP#Q.",
-    "#BPBBBBBBBBPBQ#.",
-    "#BBBBBBBBBBB##..",
-    "#BWWBBBBBBWWBB#.",
-    "#BWEBBPPBBWEBB#.",
-    "#BWWBBBBBBWWBB#.",
-    ".#BBBBBBBBBBBB#.",
-    "..#CCCC#CCCC#...",
-    ".#BBBBBBBBBBBB#.",
-    ".#WBBBBBBBBBBW#.",
-    ".#BBBBBBBBBBBB#T",
-    "..##........##.#",
-    "................"
+    "....................",
+    "...##.......###Q....",
+    "..#GG#.....#GGG#Q...",
+    ".#DGG#######GGD##...",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DDGGGGGGGGGDD#....",
+    ".#DGGGGGGGGGGGD#....",
+    ".#GGGGGGGGGGGGG#....",
+    ".#GWW#GGGGG#WWG#.##.",
+    ".#G##GGWWWG#G##G##GG#",
+    ".#GGGGWW#WWGGGG#G##G",
+    "..#GGWWWWWWWGG##G#.#",
+    "...##CCCCCCC##.#G#..",
+    "...#GGGGYGGGG#.#G#..",
+    "..#GGGGGGGGGGG#G#...",
+    "..#GGG#GGG#GGGG#....",
+    "..#GGG#GGG#GGG#.....",
+    "...###########......",
+    "....................",
+    "...................."
 )
 
 # 预先生成所有状态图标，内存中驻留复用
