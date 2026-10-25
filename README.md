@@ -56,7 +56,7 @@
 
 ### 方式一：直接下载 Release 绿色版（最推荐，小白首选）
 
-1. 前往 **[GitHub Releases 页面](https://github.com/tianchaoyamen/Heartbeat-Cat/releases)** 下载最新版 `HeartbeatCat-v1.0.0-windows-x64.zip`。
+1. 前往 **[GitHub Releases 页面](https://github.com/tianchaoyamen/Heartbeat-Cat/releases)** 下载最新版 `HeartbeatCat-v1.1.0-windows-x64.zip`。
 2. 解压到任意你喜欢的文件夹中。
 3. 双击运行 **`HeartbeatCat.exe`** 即可！
 
