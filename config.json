@@ -9,5 +9,6 @@
   "timeout_seconds": 2,
   "show_notification": true,
   "notify_delay_seconds": 5,
-  "animation_speed_ms": 400
+  "animation_speed_ms": 400,
+  "auto_start": false
 }

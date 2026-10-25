@@ -428,7 +428,44 @@ $contextMenu = New-Object System.Windows.Forms.ContextMenuStrip
 $menuStatus = New-Object System.Windows.Forms.ToolStripMenuItem("状态: 初始化中...")
 $menuStatus.Enabled = $false
 
+$runRegPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"
+$runAppName = "HeartbeatCat_PS"
+
+function Test-AutoStartPS {
+    try {
+        $val = (Get-ItemProperty -Path $runRegPath -Name $runAppName -ErrorAction SilentlyContinue).$runAppName
+        return ($null -ne $val)
+    } catch { return $false }
+}
+
+function Set-AutoStartPS {
+    param([bool]$Enable)
+    try {
+        if ($Enable) {
+            $vbsPath = Join-Path $ScriptDir "start_silent.vbs"
+            $cmd = "wscript.exe `"$vbsPath`""
+            Set-ItemProperty -Path $runRegPath -Name $runAppName -Value $cmd
+        } else {
+            Remove-ItemProperty -Path $runRegPath -Name $runAppName -ErrorAction SilentlyContinue
+        }
+    } catch {}
+}
+
 $menuCheckNow = New-Object System.Windows.Forms.ToolStripMenuItem("立即检测")
+$menuAutoStart = New-Object System.Windows.Forms.ToolStripMenuItem("开机自动启动")
+$menuAutoStart.CheckOnClick = $true
+$menuAutoStart.Checked = Test-AutoStartPS
+$menuAutoStart.Add_Click({
+    Set-AutoStartPS $menuAutoStart.Checked
+    try {
+        if ($menuAutoStart.Checked) {
+            $notifyIcon.ShowBalloonTip(2000, "开机自启已开启", "Heartbeat-Cat 已成功注册开机启动项。", [System.Windows.Forms.ToolTipIcon]::Info)
+        } else {
+            $notifyIcon.ShowBalloonTip(2000, "开机自启已关闭", "已取消开机自动启动。", [System.Windows.Forms.ToolTipIcon]::Info)
+        }
+    } catch {}
+})
+
 $menuOpenConfig = New-Object System.Windows.Forms.ToolStripMenuItem("修改配置 (config.json)")
 $menuReloadConfig = New-Object System.Windows.Forms.ToolStripMenuItem("重新加载配置")
 $menuSeparator = New-Object System.Windows.Forms.ToolStripSeparator
@@ -438,6 +475,7 @@ $contextMenu.Items.AddRange(@(
     $menuStatus,
     (New-Object System.Windows.Forms.ToolStripSeparator),
     $menuCheckNow,
+    $menuAutoStart,
     $menuOpenConfig,
     $menuReloadConfig,
     $menuSeparator,

@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace HeartbeatCat {
     public class AppConfig {
@@ -22,6 +23,7 @@ namespace HeartbeatCat {
         public bool show_notification { get; set; }
         public int notify_delay_seconds { get; set; }
         public int animation_speed_ms { get; set; }
+        public bool auto_start { get; set; }
 
         public static AppConfig CreateDefault() {
             return new AppConfig {
@@ -35,7 +37,8 @@ namespace HeartbeatCat {
                 timeout_seconds = 2,
                 show_notification = true,
                 notify_delay_seconds = 5,
-                animation_speed_ms = 400
+                animation_speed_ms = 400,
+                auto_start = false
             };
         }
     }
@@ -70,6 +73,10 @@ namespace HeartbeatCat {
         private WebProxy cachedProxy;
         private int checkCounter = 0;
         private string lastToolTip = "";
+
+        private const string RunRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        private const string RunAppName = "HeartbeatCat";
+        private ToolStripMenuItem menuAutoStart;
 
         public CatTrayContext() {
             scriptDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -144,6 +151,43 @@ namespace HeartbeatCat {
             if (config.animation_speed_ms <= 0) config.animation_speed_ms = 400;
 
             cachedProxy = new WebProxy("http://" + config.proxy_host + ":" + config.proxy_port);
+        }
+
+        private bool IsAutoStartEnabled() {
+            try {
+                using (var key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, false)) {
+                    if (key == null) return false;
+                    var val = key.GetValue(RunAppName) as string;
+                    if (string.IsNullOrEmpty(val)) return false;
+                    string cleanVal = val.Trim('\"');
+                    return string.Equals(cleanVal, Application.ExecutablePath, StringComparison.OrdinalIgnoreCase);
+                }
+            } catch {
+                return false;
+            }
+        }
+
+        private void SetAutoStart(bool enable) {
+            try {
+                using (var key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, true)) {
+                    if (key != null) {
+                        if (enable) {
+                            key.SetValue(RunAppName, "\"" + Application.ExecutablePath + "\"");
+                        } else {
+                            key.DeleteValue(RunAppName, false);
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                LogException(ex);
+            }
+        }
+
+        private void SaveConfiguration() {
+            try {
+                var serializer = new JavaScriptSerializer();
+                File.WriteAllText(configPath, serializer.Serialize(config));
+            } catch {}
         }
 
         private void InitializeCatIcons() {
@@ -361,6 +405,23 @@ namespace HeartbeatCat {
             contextMenu = new ContextMenuStrip();
             menuStatus = new ToolStripMenuItem("状态: 初始化中...") { Enabled = false };
             var menuCheckNow = new ToolStripMenuItem("立即检测", null, (s, e) => DoCheckAndUpdate());
+
+            menuAutoStart = new ToolStripMenuItem("开机自动启动") { CheckOnClick = true };
+            menuAutoStart.Checked = IsAutoStartEnabled();
+            menuAutoStart.Click += (s, e) => {
+                bool willEnable = menuAutoStart.Checked;
+                SetAutoStart(willEnable);
+                config.auto_start = willEnable;
+                SaveConfiguration();
+                try {
+                    if (willEnable) {
+                        notifyIcon.ShowBalloonTip(2000, "开机自启已开启", "Heartbeat-Cat 已成功注册开机启动项。", ToolTipIcon.Info);
+                    } else {
+                        notifyIcon.ShowBalloonTip(2000, "开机自启已关闭", "已取消开机自动启动。", ToolTipIcon.Info);
+                    }
+                } catch {}
+            };
+
             var menuOpenConfig = new ToolStripMenuItem("修改配置 (config.json)", null, (s, e) => {
                 try { Process.Start("notepad.exe", "\"" + configPath + "\""); } catch {}
             });
@@ -368,9 +429,10 @@ namespace HeartbeatCat {
                 LoadConfiguration();
                 checkTimer.Interval = Math.Max(1000, config.check_interval_seconds * 1000);
                 animTimer.Interval = Math.Max(100, config.animation_speed_ms);
+                if (menuAutoStart != null) menuAutoStart.Checked = IsAutoStartEnabled();
                 MessageBox.Show(
-                    string.Format("配置文件已重载！\n检测间隔: {0}秒\n通知防抖延时: {1}秒\n动画速度: {2}ms\n代理端口: {3}",
-                        config.check_interval_seconds, config.notify_delay_seconds, config.animation_speed_ms, config.proxy_port),
+                    string.Format("配置文件已重载！\n检测间隔: {0}秒\n通知防抖延时: {1}秒\n动画速度: {2}ms\n代理端口: {3}\n开机自启: {4}",
+                        config.check_interval_seconds, config.notify_delay_seconds, config.animation_speed_ms, config.proxy_port, IsAutoStartEnabled() ? "已开启" : "已关闭"),
                     "配置重载成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DoCheckAndUpdate();
             });
@@ -380,6 +442,7 @@ namespace HeartbeatCat {
                 menuStatus,
                 new ToolStripSeparator(),
                 menuCheckNow,
+                menuAutoStart,
                 menuOpenConfig,
                 menuReloadConfig,
                 new ToolStripSeparator(),

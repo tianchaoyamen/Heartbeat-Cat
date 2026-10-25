@@ -47,6 +47,7 @@
 
 - 🎛️ **便捷托盘右键菜单**
   - 实时显示当前连通状态与延迟数值（毫秒）。
+  - 支持 **「开机自动启动」**：右键菜单直接勾选即可开启自启，取消勾选即可关闭，开箱即用。
   - 支持 **「立即检测」**、**「修改配置 (config.json)」**、**「重新加载配置」**（无需重启程序）。
 
 ---
@@ -91,7 +92,8 @@ build.bat
   "timeout_seconds": 2,
   "show_notification": true,
   "notify_delay_seconds": 5,
-  "animation_speed_ms": 400
+  "animation_speed_ms": 400,
+  "auto_start": false
 }
 ```
 
@@ -110,6 +112,7 @@ build.bat
 | `show_notification` | `boolean` | `true` | 是否允许断网与恢复时弹出 Windows 系统通知气泡。 |
 | `notify_delay_seconds` | `number` | `5` | **断网通知延时防抖（秒）**。断线持续超过此时间才弹窗，避免频繁闪断打扰。 |
 | `animation_speed_ms` | `number` | `400` | 猫猫招手与眨眼动画帧切换间隔（毫秒）。 |
+| `auto_start` | `boolean` | `false` | 是否开启开机自动启动（亦可在托盘右键菜单直接勾选切换）。 |
 
 ---
 
@@ -120,12 +123,12 @@ build.bat
 
 ---
 
-## 🛠️ 开机自启设置 (可选)
+## 🛠️ 开机自启设置
 
-如果你希望每天开机后小猫自动出现在任务栏：
-1. 按键盘快捷键 `Win + R` 打开「运行」窗口。
-2. 输入 `shell:startup` 并回车，打开 Windows 启动文件夹。
-3. 将 `HeartbeatCat.exe` 右键创建桌面快捷方式，将该快捷方式移动到 `shell:startup` 文件夹中即可。
+程序已内置一键开机自启功能：
+1. 鼠标右键点击右下角任务栏的猫猫图标。
+2. 直接点击 **「开机自动启动」** 即可完成注册（会有系统气泡提示）。
+3. 如需关闭，再次右键点击取消勾选即可。无需手动创建快捷方式或配置文件夹！
 
 ---
 
